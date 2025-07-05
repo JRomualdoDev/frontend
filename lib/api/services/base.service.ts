@@ -1,13 +1,26 @@
 // lib/api/services/base.service.ts
+import { formatDateTime } from '@/utils/dateFormatter'
 import { apiRequest, ApiResponse } from '../client'
+import { Task } from './task.service'
 
 export abstract class BaseService {
     protected abstract endpoint: string
 
     // CRUD básico
-    async findAll<T>(params?: Record<string, string>): Promise<ApiResponse<T[]>> {
+    async findAll<T extends Task>(params?: Record<string, string>): Promise<ApiResponse<T[]>> {
         const queryString = params ? `?${new URLSearchParams(params).toString()}` : ''
-        return apiRequest.get(`${this.endpoint}${queryString}`)
+
+        const request: ApiResponse<T[]> = await apiRequest.get(`${this.endpoint}${queryString}`)
+        const output = request.data.map((task) => ({
+            ...task,
+            created_at: formatDateTime(task.created_at),
+            updated_at: formatDateTime(task.updated_at)
+        }))
+        return {
+            data: output,
+            success: request.success,
+            length: output.length,
+        }
     }
 
     async findById<T>(id: string | number): Promise<ApiResponse<T>> {

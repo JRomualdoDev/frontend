@@ -2,7 +2,7 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
 
 // Tipos base para respostas da API
-export interface ApiResponse<T = unknown> {
+export interface ApiResponse<T> {
     length: number
     data: T
     message?: string

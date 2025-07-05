@@ -65,11 +65,11 @@ export default function ListTask() {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {data && Array.isArray(data)
-                            ? data.map((task, index) => {
+                        {data && Array.isArray(data.data)
+                            ? data.data.map((task, index) => {
                                 console.log(`Task ${index}:`, task)
                                 return (
-                                    <TableRow key={task.id || task._id || index}>
+                                    <TableRow key={task.id}>
                                         <TableCell className="font-medium">
                                             {task.title}
                                         </TableCell>
